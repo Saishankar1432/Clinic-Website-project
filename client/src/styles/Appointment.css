@@ -1,0 +1,298 @@
+/* ===============================
+   GLOBAL
+================================ */
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+body {
+  background: #f4f8ff;
+}
+
+.star {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+/* ===============================
+   TABS
+================================ */
+.appointment-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.appointment-tabs button {
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 2px solid #1e90ff;
+  background: #ffffff;
+  color: #1e90ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.appointment-tabs button:hover {
+  background: #eef6ff;
+  transform: translateY(-1px);
+}
+
+.appointment-tabs .active {
+  background: linear-gradient(135deg, #1e90ff, #4facfe);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 10px 25px rgba(30,144,255,0.35);
+}
+
+/* ===============================
+   FORM
+================================ */
+.appointment-form {
+  max-width: 650px;
+  margin: auto;
+  background: #ffffff;
+  padding: 36px 34px;
+  border-radius: 24px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+}
+
+.appointment-form h3 {
+  text-align: center;
+  color: #1e90ff;
+  margin-bottom: 26px;
+  font-size: 22px;
+}
+
+.appointment-form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ===============================
+   INPUTS
+================================ */
+.appointment-form input,
+.appointment-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1.5px solid #dcdcdc;
+  font-size: 14px;
+}
+
+.appointment-form input:focus,
+.appointment-form textarea:focus {
+  border-color: #1e90ff;
+  box-shadow: 0 0 0 4px rgba(30,144,255,0.15);
+  outline: none;
+}
+
+textarea {
+  resize: none;
+}
+
+/* ===============================
+   BUTTON
+================================ */
+.appointment-form button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #1e90ff, #4facfe);
+  color: #fff;
+  border-radius: 999px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.appointment-form button:hover {
+  box-shadow: 0 14px 30px rgba(30,144,255,0.4);
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   CHECKBOX & RADIO GROUPS (FIXED)
+================================ */
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+/* SINGLE ROW */
+.checkbox-row,
+.radio-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.checkbox-row input,
+.radio-row input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* TEXT NEXT TO INPUT */
+.checkbox-text,
+.radio-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* TAG RIGHT */
+.home-tag,
+.hospital-tag {
+  margin-left: auto; /* 🔥 push tag to right */
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.home-tag {
+  color: #27ae60;
+}
+
+.hospital-tag {
+  color: #c0392b;
+}
+
+/* ===============================
+   EMERGENCY
+================================ */
+.emergency-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffecec;
+  border: 1px solid #ffb3b3;
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.emergency-row input {
+  transform: scale(1.3);
+}
+
+.blink-note {
+  color: #d63031;
+  font-weight: 700;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.3; }
+}
+
+/* ===============================
+   OVERLAY
+================================ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.overlay-card {
+  width: 340px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 30px;
+  text-align: center;
+  position: relative; 
+}
+
+.overlay-card.success {
+  border-top: 8px solid #27ae60;
+}
+
+.overlay-card.error {
+  border-top: 8px solid #c0392b;
+}
+
+.icon {
+  font-size: 48px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  cursor: pointer;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+  z-index: 10;
+}
+
+.close-btn:hover {
+  color: #e74c3c;
+}
+
+/* ===============================
+   TOKEN
+================================ */
+.token-big {
+  margin-top: 14px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1e90ff;
+}
+
+@media (max-width: 600px) {
+  .appointment-form {
+    padding: 22px;
+    border-radius: 16px;
+  }
+
+  .appointment-tabs {
+    gap: 10px;
+  }
+
+  .appointment-tabs button {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .checkbox-row,
+  .radio-row {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .token-big {
+    font-size: 22px;
+  }
+
+  .overlay-card {
+    width: 90%;
+    padding: 24px;
+  }
+}

@@ -1,0 +1,195 @@
+.services-section {
+  padding: 80px 20px;
+  background: #f8fbff;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 36px;
+  color: #1e90ff;
+}
+
+.section-subtitle {
+  color: #666;
+  margin-bottom: 40px;
+}
+
+/* GRID */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* CARD */
+.service-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+}
+
+/* HEADER */
+.service-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.service-icon {
+  font-size: 22px;
+  color: #1e90ff;
+}
+
+/* TEXT */
+.doctor-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 6px 0;
+}
+
+.doctor-meta,
+.visit-hours {
+  font-size: 14px;
+  color: #555;
+}
+
+/* BUTTONS */
+.service-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn.primary {
+  background: #1e90ff;
+  color: #fff;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid #1e90ff;
+  color: #1e90ff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+}
+/* ===== CLINIC FACILITIES (LAB / PHARMACY / AMBULANCE) ===== */
+
+.facilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 side by side */
+  gap: 24px;
+  max-width: 1200px;
+  margin: 40px auto 0;
+}
+
+.facility-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  padding: 18px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.facility-card:hover {
+  transform: translateY(-6px);
+}
+
+/* SMALL IMAGE */
+.facility-card img {
+  width: 100%;
+  height: 140px;              /* 👈 SMALL HEIGHT */
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* TITLE */
+.facility-card h3 {
+  font-size: 18px;
+  color: #1e90ff;
+  margin-bottom: 6px;
+}
+
+/* DESCRIPTION */
+.facility-card p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* TIME */
+.facility-time {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+/* ACTION BUTTONS */
+.facility-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .facilities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .facilities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .facility-card img {
+    height: 120px;
+  }
+}
+.service-category {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  background: #eaf4ff;
+  color: #1e90ff;
+  font-size: 12px;
+  border-radius: 12px;
+}
