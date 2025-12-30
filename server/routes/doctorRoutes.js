@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+const logActivity = require("../utils/auditLogger");
 
 /* =========================
    GET ALL DOCTORS (Frontend)
@@ -72,5 +73,45 @@ router.delete("/:id", (req, res) => {
     }
   );
 });
+
+/* ===============================
+   EXPORT DOCTORS (ADMIN)
+================================ */
+router.get("/export/csv", (req, res) => {
+  const query = "SELECT * FROM doctors";
+logActivity({
+  userType: "admin",
+  userId: null,
+  action: "export_doctors",
+  req
+});
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("❌ EXPORT ERROR:", err);
+      return res.status(500).json({ message: "Export failed" });
+    }
+
+    let csv =
+      "Name,Specialization,Qualification,Experience,Hours,Image\n";
+
+    results.forEach(row => {
+      csv += `"${row.name}","${row.specialization}","${row.qualification}","${row.experience}","${row.hours}","${row.image}"\n`;
+    });
+
+    /* ✅ LOG ACTIVITY HERE */
+    logActivity({
+      userType: "admin",
+      userId: null,                 // use admin id if available
+      action: "export_doctors",
+      req
+    });
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("doctors.csv");
+    res.send(csv);
+  });
+});
+
 
 module.exports = router;

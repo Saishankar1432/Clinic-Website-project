@@ -3,8 +3,12 @@ import "../styles/Home.css";
 import API from "../services/api";
 import logo from "../assets/logo.png";
 import clinicImage from "../assets/clinic.jpg";
+import useScrollTitle from "../utils/useScrollTitle";
+
 
 const Home = () => {
+  useScrollTitle();
+
   const [clinic, setClinic] = useState(null);
 
   useEffect(() => {
@@ -73,6 +77,7 @@ const Home = () => {
       </div>
     </section>
   );
+
 };
 
 export default Home;

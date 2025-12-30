@@ -380,3 +380,15 @@ body {
     justify-self: stretch;
   }
 }
+.export-btn {
+  padding: 8px 16px;
+  background: #1e90ff;
+  color: white;
+  border: solid;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.export-btn:hover {
+  background: #0f6adf;
+}

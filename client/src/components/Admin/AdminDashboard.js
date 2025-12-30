@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import "./Admin.css";
 import ManageClinic from "./ManageClinic";
 import ManageDoctors from "./ManageDoctors";
@@ -6,12 +6,29 @@ import ManageServices from "./ManageServices";
 import ManageAppointments from "./ManageAppointments";
 import ManageAbout from "./ManageAbout";
 import ManageContact from "./ManageContact";
+import ManageFeedback from "./ManageFeedback";
 import ManageFooter from "./ManageFooter";
+
+
 import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [page, setPage] = useState("clinic");
   const navigate = useNavigate();
+  useLayoutEffect(() => {
+  const titles = {
+    clinic: "Admin | Clinic",
+    doctors: "Admin | Doctors",
+    services: "Admin | Services",
+    appointments: "Admin | Appointments",
+    about: "Admin | About",
+    contact: "Admin | Contact",
+    feedback: "Admin | Feedback",
+    footer: "Admin | Footer"
+  };
+
+  document.title = titles[page] || "Admin Panel";
+}, [page]);
 
   return (
     <div className="admin-layout">
@@ -24,6 +41,7 @@ const AdminDashboard = () => {
         <p className={page==="appointments"?"active":""} onClick={()=>setPage("appointments")}>📅 Appointments</p>
         <p className={page==="about"?"active":""} onClick={()=>setPage("about")}>ℹ️ About</p>
         <p className={page==="contact"?"active":""} onClick={()=>setPage("contact")}>📞 Contact</p>
+        <p className={page==="feedback"?"active":""} onClick={()=>setPage("feedback")}>📝 Feedback</p>
         <p className={page==="footer"?"active":""} onClick={()=>setPage("footer")}>📌 Footer</p>
 
         <button className="logout-btn" onClick={()=>navigate("/admin")}>🚪 Logout</button>
@@ -37,6 +55,7 @@ const AdminDashboard = () => {
           {page==="appointments" && <ManageAppointments />}
           {page==="about" && <ManageAbout />}
           {page==="contact" && <ManageContact />}
+          {page === "feedback" && <ManageFeedback />}
           {page==="footer" && <ManageFooter />}
         </div>
       </div>

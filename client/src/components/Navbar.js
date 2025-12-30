@@ -21,7 +21,7 @@ const Navbar = () => {
         <div className="nav-info">
           <div className="nav-text">
             <span className="nav-title">Paidi's Clinic</span>
-            <span className="nav-tagline">Caring for Your Health</span>
+            <span className="nav-tagline">Compasionate Care for All Generation</span>
           </div>
 
           {/* SEARCH NEAR TITLE */}

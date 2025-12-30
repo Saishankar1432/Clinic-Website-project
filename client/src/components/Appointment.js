@@ -3,6 +3,7 @@ import "../styles/Appointment.css";
 import API from "../services/api";
 import BookingSuccess from "./BookingSuccess";
 
+
 /* =========================
    MASTER DATA
 ========================= */
@@ -13,9 +14,9 @@ const doctorsList = [
   "Dr. Anjali Reddy",
   "Dr. Ravi Teja",
   "Dr. V. Sneha",
-  "Dr. Gayathri",
+  "Dr. P. Gayathri",
   "Dr. M. Bhanu Pravallika",
-  "Dr. Renuka",
+  "Dr. P. Renuka",
 ];
 
 const labTests = [
@@ -38,6 +39,7 @@ const labTests = [
 ];
 
 const Appointment = () => {
+  
   const [activeTab, setActiveTab] = useState("doctor");
   const [overlay, setOverlay] = useState(null);
   const [token, setToken] = useState(null);

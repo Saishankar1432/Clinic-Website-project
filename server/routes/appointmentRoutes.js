@@ -223,4 +223,34 @@ router.post("/checkin", (req, res) => {
   );
 });
 
+/* ===============================
+   EXPORT APPOINTMENTS (ADMIN)
+================================ */
+router.get("/export/csv", (req, res) => {
+  const query = `
+    SELECT token, name, phone, service, test, appointment_date, status
+    FROM appointments
+    ORDER BY appointment_date DESC
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("❌ EXPORT ERROR:", err);
+      return res.status(500).json({ message: "Export failed" });
+    }
+
+    let csv =
+      "Token,Patient,Phone,Service/Test,Date,Status\n";
+
+    results.forEach(row => {
+      csv += `"${row.token}","${row.name}","${row.phone}","${row.service || row.test || ""}","${row.appointment_date || ""}","${row.status}"\n`;
+    });
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("appointments.csv");
+    res.send(csv);
+  });
+});
+
+
 module.exports = router;

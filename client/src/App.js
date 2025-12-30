@@ -50,6 +50,9 @@ function App() {
       {/* MANUAL CHECK-IN (BACKUP) */}
       <Route path="/checkin/manual" element={<CheckIn />} />
 
+      
+
+
     </Routes>
   );
 }

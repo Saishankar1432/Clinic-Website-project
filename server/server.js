@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
+const feedbackRoutes = require("./routes/feedbackRoutes");
 app.use(cors());
 app.use(express.json());
 
@@ -14,6 +15,8 @@ app.use("/api/contact", require("./routes/contactRoutes"));
 app.use("/api/footer", require("./routes/footerRoutes"));
 app.use("/api/pages", require("./routes/pagesRoute")); 
 app.use("/api/appointments", require("./routes/appointmentRoutes"));
+app.use("/api/feedback", require("./routes/feedbackRoutes"));
+
 
 
 app.listen(5000, () => {

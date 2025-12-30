@@ -2,6 +2,7 @@ import React,{useEffect,useState} from "react";
 import API from "../../services/api";
 
 const ManageClinic=()=>{
+ 
   const [clinic,setClinic]=useState({name:"",tagline:"",about:""});
 
   useEffect(()=>{

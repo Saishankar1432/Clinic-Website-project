@@ -23,6 +23,38 @@ router.post("/login", (req, res) => {
       res.json({ message: "Login successful" });
     }
   );
+  const logActivity = require("../utils/auditLogger");
+
+router.post("/login", (req, res) => {
+  // after password validation success
+
+  logActivity({
+    userType: "admin",
+    userId: admin.id,
+    action: "admin_login",
+    req
+  });
+
+  res.json({ message: "Login successful" });
 });
+
+});
+
+/* ===============================
+   VIEW AUDIT LOGS (ADMIN)
+================================ */
+router.get("/logs", (req, res) => {
+  db.query(
+    "SELECT * FROM audit_logs ORDER BY created_at DESC",
+    (err, results) => {
+      if (err) {
+        console.error("❌ LOG FETCH ERROR:", err);
+        return res.status(500).json({ message: "Failed to fetch logs" });
+      }
+      res.json(results);
+    }
+  );
+});
+
 
 module.exports = router;

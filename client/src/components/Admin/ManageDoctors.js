@@ -11,6 +11,7 @@ const empty = {
 };
 
 const ManageDoctors = () => {
+ 
   const [doctors, setDoctors] = useState([]);
   const [form, setForm] = useState(empty);
   const [editId, setEditId] = useState(null);
@@ -41,6 +42,8 @@ const ManageDoctors = () => {
       load();
     });
   };
+
+  
 
   return (
     <>
@@ -106,9 +109,26 @@ const ManageDoctors = () => {
         </button>
       </form>
 
-      <h2 className="page-title" style={{ marginTop: 40 }}>
-        Doctors List
-      </h2>
+      <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 40
+  }}
+>
+  <h2 className="page-title">Doctors List</h2>
+
+  <button
+    className="export-btn"
+    onClick={() =>
+      window.open("http://localhost:5000/api/doctors/export/csv")
+    }
+  >
+    ⬇ Export CSV
+  </button>
+</div>
+
 
       <table className="admin-table">
         <thead>

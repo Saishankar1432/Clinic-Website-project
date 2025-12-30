@@ -3,7 +3,10 @@ import "../styles/About.css";
 import API from "../services/api";
 import doctorImage from "../assets/doctor.jpg"; // static image
 
+
 const About = () => {
+  
+  
   const [about, setAbout] = useState({});
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../services/api";
 
 const ManageAppointments = () => {
+  
   const [appointments, setAppointments] = useState([]);
   const [search, setSearch] = useState("");
   const [showToday, setShowToday] = useState(false);
@@ -45,6 +46,13 @@ const ManageAppointments = () => {
       <button className="save-btn" onClick={() => setShowToday(!showToday)}>
         {showToday ? "Show All" : "Show Today"}
       </button>
+
+      <button
+      onClick={() => window.open("http://localhost:5000/api/appointments/export/csv")}
+      className="export-btn"
+    >
+      ⬇ Export CSV
+    </button>
 
       <table className="admin-table" style={{ marginTop: 20 }}>
         <thead>

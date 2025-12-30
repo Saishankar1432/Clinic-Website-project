@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Contact.css";
 import API from "../services/api";
-
+import Feedback from "../components/Feedback";
 const Contact = () => {
   const [contact, setContact] = useState({});
 
@@ -13,9 +13,9 @@ const Contact = () => {
     <section className="contact-section" id="contact">
       <div className="contact-container">
 
-        {/* LEFT SIDE */}
+        {/* LEFT SIDE – CONTACT INFO */}
         <div className="contact-info">
-          <h2>{contact.title}</h2>
+          <h2>{contact.title || "Contact Us"}</h2>
 
           {contact.content?.split("|").map((line, i) => (
             <p key={i}>{line}</p>
@@ -26,17 +26,9 @@ const Contact = () => {
           </p>
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="contact-form">
-          <h3>Patient Feedback</h3>
-
-          <form>
-            <input type="text" placeholder="Your Name *" required />
-            <input type="tel" placeholder="Phone Number *" required />
-            <input type="email" placeholder="Email" />
-            <textarea placeholder="Write your feedback..." required />
-            <button type="submit">Submit Feedback</button>
-          </form>
+        {/* RIGHT SIDE – FEEDBACK FORM */}
+        <div className="contact-feedback">
+          <Feedback />
         </div>
 
       </div>
