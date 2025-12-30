@@ -4,7 +4,7 @@ const db = require("../config/db");
 const logActivity = require("../utils/auditLogger");
 
 /* =========================
-   GET ALL DOCTORS (Frontend)
+   GET ALL DOCTORS
 ========================= */
 router.get("/", (req, res) => {
   db.query("SELECT * FROM doctors", (err, result) => {
@@ -14,26 +14,47 @@ router.get("/", (req, res) => {
 });
 
 /* =========================
-   ADD DOCTOR (Admin CMS)
+   ADD DOCTOR (ADMIN)
 ========================= */
 router.post("/", (req, res) => {
-  const { name, specialization, qualification, experience, hours } = req.body;
+  const {
+    name,
+    specialization,
+    qualification,
+    experience,
+    hours,
+    image,
+    emoji          // ✅ ADD THIS
+  } = req.body;
 
   db.query(
-    "INSERT INTO doctors (name, specialization, qualification, experience, hours) VALUES (?, ?, ?, ?, ?)",
-    [name, specialization, qualification, experience, hours],
+    `INSERT INTO doctors
+     (name, specialization, qualification, experience, hours, image, emoji)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [name, specialization, qualification, experience, hours, image, emoji],
     (err) => {
-      if (err) return res.status(500).json(err);
+      if (err) {
+        console.error(err);
+        return res.status(500).json(err);
+      }
       res.json({ message: "Doctor added successfully" });
     }
   );
 });
 
-/* ==========================
+/* =========================
    UPDATE DOCTOR
-========================== */
+========================= */
 router.put("/:id", (req, res) => {
-  const { name, specialization, qualification, experience, hours, image } = req.body;
+  const {
+    name,
+    specialization,
+    qualification,
+    experience,
+    hours,
+    image,
+    emoji           // ✅ ADD THIS
+  } = req.body;
 
   const sql = `
     UPDATE doctors SET
@@ -42,13 +63,23 @@ router.put("/:id", (req, res) => {
       qualification = ?,
       experience = ?,
       hours = ?,
-      image = ?
+      image = ?,
+      emoji = ?          -- ✅ FIXED COMMA
     WHERE id = ?
   `;
 
   db.query(
     sql,
-    [name, specialization, qualification, experience, hours, image, req.params.id],
+    [
+      name,
+      specialization,
+      qualification,
+      experience,
+      hours,
+      image,
+      emoji,
+      req.params.id
+    ],
     (err) => {
       if (err) {
         console.error(err);
@@ -58,7 +89,6 @@ router.put("/:id", (req, res) => {
     }
   );
 });
-
 
 /* =========================
    DELETE DOCTOR
@@ -79,12 +109,13 @@ router.delete("/:id", (req, res) => {
 ================================ */
 router.get("/export/csv", (req, res) => {
   const query = "SELECT * FROM doctors";
-logActivity({
-  userType: "admin",
-  userId: null,
-  action: "export_doctors",
-  req
-});
+
+  logActivity({
+    userType: "admin",
+    userId: null,
+    action: "export_doctors",
+    req
+  });
 
   db.query(query, (err, results) => {
     if (err) {
@@ -93,18 +124,10 @@ logActivity({
     }
 
     let csv =
-      "Name,Specialization,Qualification,Experience,Hours,Image\n";
+      "Name,Specialization,Qualification,Experience,Hours,Image,Emoji\n";
 
     results.forEach(row => {
-      csv += `"${row.name}","${row.specialization}","${row.qualification}","${row.experience}","${row.hours}","${row.image}"\n`;
-    });
-
-    /* ✅ LOG ACTIVITY HERE */
-    logActivity({
-      userType: "admin",
-      userId: null,                 // use admin id if available
-      action: "export_doctors",
-      req
+      csv += `"${row.name}","${row.specialization}","${row.qualification}","${row.experience}","${row.hours}","${row.image}","${row.emoji}"\n`;
     });
 
     res.header("Content-Type", "text/csv");
@@ -112,6 +135,5 @@ logActivity({
     res.send(csv);
   });
 });
-
 
 module.exports = router;

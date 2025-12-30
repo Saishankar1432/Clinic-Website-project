@@ -7,7 +7,8 @@ const empty = {
   qualification: "",
   experience: "",
   hours: "",
-  image: ""
+  image: "",
+  emoji: ""
 };
 
 const ManageDoctors = () => {
@@ -65,6 +66,24 @@ const ManageDoctors = () => {
           onChange={e => setForm({ ...form, specialization: e.target.value })}
           required
         />
+        <select
+  value={form.emoji}
+  onChange={e => setForm({ ...form, emoji: e.target.value })}
+  required
+>
+  <option value="">Select Emoji</option>
+  <option value="🧠">🧠 Neurologist</option>
+  <option value="🩺">🩺 General Physician</option>
+  <option value="❤️">❤️ Cardiologist</option>
+  <option value="🎗️">🎗️ Oncologist</option>
+  <option value="🫀">🫀 Cardiothoracic</option>
+  <option value="🦷">🦷 Dentist</option>
+  <option value="👂">👂 ENT</option>
+  <option value="👁️">👁️ Ophthalmologist</option>
+  <option value="🦴">🦴 Orthopedic</option>
+</select>
+
+
 
         <input
           placeholder="Qualification"

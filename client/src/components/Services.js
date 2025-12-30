@@ -35,7 +35,10 @@ const Services = () => {
       <div className="services-grid">
         {doctors.map(doc => (
           <div className="service-card" key={doc.id}>
-            <h3>{doc.specialization}</h3>
+            <h3>
+  {doc.emoji && <span style={{ fontSize: "22px", marginRight: 6 }}>{doc.emoji}</span>}
+  {doc.specialization}
+</h3>
             <p className="doctor-name">{doc.name}</p>
             <p className="doctor-meta">
               {doc.qualification} • {doc.experience}
@@ -102,19 +105,36 @@ const Services = () => {
                   }
                 >
                   Home Sample Collection
-                </button>
+                 </button>
 
-                <button className="btn outline">
-                  Book Lab Test
-                </button>
+                <button
+                  className="btn outline"
+                  onClick={() => {
+                  localStorage.setItem("appointmentType", "lab");
+                  document
+                  .getElementById("appointment")
+                  ?.scrollIntoView({ behavior: "smooth" });
+                }}
+               >
+                Book Lab Test
+              </button>
               </div>
             )}
 
             {s.category === "pharmacy" && (
               <div className="facility-actions">
-                <button className="btn primary">
-                  Order Medicines
-                </button>
+                <button
+  className="btn primary"
+  onClick={() => {
+    localStorage.setItem("appointmentType", "pharmacy");
+    document
+      .getElementById("appointment")
+      ?.scrollIntoView({ behavior: "smooth" });
+  }}
+>
+  Order Medicines
+</button>
+
 
                 <button
                   className="btn outline"

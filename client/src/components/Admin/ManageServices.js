@@ -127,7 +127,6 @@ const ManageServices = () => {
           required
         >
           <option value="">Select Category *</option>
-          <option value="doctor">Doctor</option>
           <option value="lab">Lab</option>
           <option value="pharmacy">Pharmacy</option>
           <option value="ambulance">Ambulance</option>
@@ -139,13 +138,6 @@ const ManageServices = () => {
           onChange={e => setForm({ ...form, image: e.target.value })}
         >
           <option value="">Select Image / Icon</option>
-
-          {/* Doctor icons */}
-          <option value="brain">Brain (Neurology)</option>
-          <option value="heart">Heart (Cardiology)</option>
-          <option value="tooth">Tooth (Dental)</option>
-          <option value="eye">Eye</option>
-          <option value="bone">Orthopedic</option>
 
           {/* Facility images */}
           <option value="lab.jpg">Lab Image</option>
