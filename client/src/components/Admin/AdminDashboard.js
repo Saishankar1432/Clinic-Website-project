@@ -9,7 +9,6 @@ import ManageContact from "./ManageContact";
 import ManageFeedback from "./ManageFeedback";
 import ManageFooter from "./ManageFooter";
 
-
 import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
@@ -43,6 +42,17 @@ const AdminDashboard = () => {
         <p className={page==="contact"?"active":""} onClick={()=>setPage("contact")}>📞 Contact</p>
         <p className={page==="feedback"?"active":""} onClick={()=>setPage("feedback")}>📝 Feedback</p>
         <p className={page==="footer"?"active":""} onClick={()=>setPage("footer")}>📌 Footer</p>
+
+        <button
+          className="backup-btn"
+          onClick={() => {
+          if (window.confirm("Do you want to backup the entire database now?")) {
+          window.open("http://localhost:5000/api/admin/backup");
+          }
+        }}
+        >
+       🗄️ Database Backup
+        </button>
 
         <button className="logout-btn" onClick={()=>navigate("/admin")}>🚪 Logout</button>
       </div>

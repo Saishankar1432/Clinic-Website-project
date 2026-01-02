@@ -154,6 +154,7 @@ const ManageDoctors = () => {
           <tr>
             <th>Name</th>
             <th>Specialization</th>
+            <th>Experience</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -162,6 +163,7 @@ const ManageDoctors = () => {
             <tr key={d.id}>
               <td>{d.name}</td>
               <td>{d.specialization}</td>
+              <td>{d.experience}</td>
               <td>
                 <button
                   onClick={() => {

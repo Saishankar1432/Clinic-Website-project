@@ -392,3 +392,18 @@ body {
 .export-btn:hover {
   background: #0f6adf;
 }
+.backup-btn {
+  margin: 12px 16px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #ffffff;
+  color: #1e90ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.backup-btn:hover {
+  background: #eaf3ff;
+}

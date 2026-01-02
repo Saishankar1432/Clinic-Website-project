@@ -3,6 +3,8 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const cron = require("node-cron");
+const backupDB = require("./backup/dbBackup");
 app.use(cors());
 app.use(express.json());
 
@@ -21,4 +23,10 @@ app.use("/api/feedback", require("./routes/feedbackRoutes"));
 
 app.listen(5000, () => {
   console.log("Backend running on port 5000");
+});
+
+// Daily DB backup at 2:00 AM
+cron.schedule("0 2 * * *", () => {
+  console.log("⏰ Running daily database backup...");
+  backupDB();
 });

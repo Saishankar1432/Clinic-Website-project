@@ -3,7 +3,6 @@ import "../styles/Appointment.css";
 import API from "../services/api";
 import BookingSuccess from "./BookingSuccess";
 
-
 /* =========================
    MASTER DATA
 ========================= */
@@ -39,7 +38,6 @@ const labTests = [
 ];
 
 const Appointment = () => {
-  
   const [activeTab, setActiveTab] = useState("doctor");
   const [overlay, setOverlay] = useState(null);
   const [token, setToken] = useState(null);
@@ -47,6 +45,7 @@ const Appointment = () => {
   const [isEmergency, setIsEmergency] = useState(false);
   const [sampleType, setSampleType] = useState("hospital");
   const [selectedTests, setSelectedTests] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -58,6 +57,50 @@ const Appointment = () => {
     address: "",
     location: "",
   });
+
+  /* ===== DATE & TIME HELPERS ===== */
+  const getTodayDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
+
+  const getMinTime = () => {
+    if (form.appointment_date === getTodayDate()) {
+      return new Date().toTimeString().slice(0, 5);
+    }
+    return "";
+  };
+
+  const isPastTimeForToday = (time) => {
+    if (form.appointment_date !== getTodayDate()) return false;
+
+    const now = new Date();
+    const [h, m] = time.split(":").map(Number);
+
+    const selected = new Date();
+    selected.setHours(h, m, 0, 0);
+
+    return selected < now;
+  };
+
+  const handleTimeChange = (e) => {
+    const selectedTime = e.target.value;
+
+    if (isPastTimeForToday(selectedTime)) {
+      alert("Please select a future time");
+      setForm({ ...form, appointment_time: "" });
+      return;
+    }
+
+    setForm({ ...form, appointment_time: selectedTime });
+  };
+
+  const handleDateChange = (e) => {
+    setForm({
+      ...form,
+      appointment_date: e.target.value,
+      appointment_time: ""
+    });
+  };
 
   /* =========================
      PRICE LOGIC
@@ -75,22 +118,40 @@ const Appointment = () => {
      SUBMIT
   ========================= */
   const submitAppointment = async (type) => {
-    try {
-      const payload = {
-        ...form,
-        type,
-        test: selectedTests.join(", "),
-        sampleType,
-        amount: calculatePrice(),
-      };
+  if (loading) return; // prevent double click
 
-      const res = await API.post("/appointments", payload);
+  try {
+    setLoading(true);
+
+    const payload = {
+      ...form,
+      type,
+      test: selectedTests.join(", "),
+      sampleType,
+      amount: calculatePrice(),
+    };
+
+    const res = await API.post("/appointments", payload);
+
+    // ✅ TOKEN ONLY FOR VISIT TYPES
+    if (
+      type === "doctor" ||
+      (type === "lab" && sampleType === "hospital")
+    ) {
       setToken(res.data.token);
       setOverlay("success");
-    } catch {
-      setOverlay("error");
+    } else {
+      // ❌ NO TOKEN CASES
+      setOverlay("info");
     }
-  };
+
+  } catch (err) {
+    setOverlay("error");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <section className="appointment-section" id="appointment">
@@ -119,6 +180,28 @@ const Appointment = () => {
         </div>
       )}
 
+      {/* ===== INFO (NO TOKEN CASES) ===== */}
+{overlay === "info" && (
+  <div className="overlay">
+    <div className="overlay-card">
+      <span className="close-btn" onClick={() => setOverlay(null)}>✖</span>
+
+      <h3>Request Submitted Successfully</h3>
+
+      <p>
+        {activeTab === "pharmacy" && (
+          <>Your medicine request has been received. Our pharmacist will contact you shortly.</>
+        )}
+
+        {activeTab === "lab" && sampleType === "home" && (
+          <>Your home sample request has been received. Our lab technician will visit your address as scheduled.</>
+        )}
+      </p>
+    </div>
+  </div>
+)}
+
+
       {/* ===== TABS ===== */}
       <div className="appointment-tabs">
         <button className={activeTab === "doctor" ? "active" : ""} onClick={() => setActiveTab("doctor")}>Doctor</button>
@@ -137,8 +220,19 @@ const Appointment = () => {
           <label>Patient Name <span className="star">*</span></label>
           <input required onChange={e => setForm({ ...form, name: e.target.value })} />
 
-          <label>Phone <span className="star">*</span></label>
-          <input required onChange={e => setForm({ ...form, phone: e.target.value })} />
+          <label>Phone *</label>
+          <input
+            required
+            maxLength="10"
+            inputMode="numeric"
+            value={form.phone}
+            onChange={e =>
+              setForm({
+                ...form,
+                phone: e.target.value.replace(/[^0-9]/g, "")
+              })
+            }
+          />
 
           <label>Email</label>
           <input onChange={e => setForm({ ...form, email: e.target.value })} />
@@ -149,20 +243,41 @@ const Appointment = () => {
             {doctorsList.map(d => <option key={d}>{d}</option>)}
           </select>
 
-          <label>Date <span className="star">*</span></label>
-          <input type="date" required onChange={e => setForm({ ...form, appointment_date: e.target.value })} />
+          <label>Date *</label>
+          <input
+           type="date"
+           min={getTodayDate()}
+           value={form.appointment_date}
+           required
+           onChange={handleDateChange}
+          />
 
-          <label>Time <span className="star">*</span></label>
-          <input type="time" required onChange={e => setForm({ ...form, appointment_time: e.target.value })} />
 
-          <label className="emergency-row">
-            <input type="checkbox" checked={isEmergency} onChange={e => setIsEmergency(e.target.checked)} />
-            Emergency Visit
-          </label>
+          <label>Time *</label>
+          <input
+            type="time"
+            min={getMinTime()}
+            value={form.appointment_time}
+            required
+            onChange={handleTimeChange}
+          />
+
+
+         <label className="checkbox-row emergency-row">
+           <input
+            type="checkbox"
+            checked={isEmergency}
+            onChange={e => setIsEmergency(e.target.checked)}
+           />
+          <span className="checkbox-text"> Emergency Visit</span>
+         </label>
+
 
           <p className="blink-note">⚠ Show token at reception and Check Weight, BP and Temperature</p>
 
-          <button>Generate Token</button>
+          <button disabled={loading}>
+          {loading ? "Please wait..." : "Generate Token"}
+          </button>
         </form>
       )}
 
@@ -177,17 +292,41 @@ const Appointment = () => {
           <label>Patient Name <span className="star">*</span></label>
           <input required onChange={e => setForm({ ...form, name: e.target.value })} />
 
-          <label>Phone <span className="star">*</span></label>
-          <input required onChange={e => setForm({ ...form, phone: e.target.value })} />
+          <label>Phone *</label>
+          <input
+            required
+            maxLength="10"
+            inputMode="numeric"
+            value={form.phone}
+            onChange={e =>
+              setForm({
+                ...form,
+                phone: e.target.value.replace(/[^0-9]/g, "")
+              })
+            }
+          />
 
           <label>Email <span className="star">*</span></label>
           <input required onChange={e => setForm({ ...form, phone: e.target.value })} />
 
-          <label>Date <span className="star">*</span></label>
-          <input type="date" required onChange={e => setForm({ ...form, appointment_date: e.target.value })} />
+          <label>Date *</label>
+          <input
+           type="date"
+           min={getTodayDate()}
+           value={form.appointment_date}
+           required
+           onChange={handleDateChange}
+          />
 
-          <label>Time <span className="star">*</span></label>
-          <input type="time" required onChange={e => setForm({ ...form, appointment_time: e.target.value })} />
+
+          <label>Time *</label>
+          <input
+            type="time"
+            min={getMinTime()}
+            value={form.appointment_time}
+            required
+            onChange={handleTimeChange}
+          />
 
           <label>Sample Type <span className="star">*</span></label>
           <select required value={sampleType} onChange={e => setSampleType(e.target.value)}>
@@ -234,7 +373,9 @@ const Appointment = () => {
             </>
           )}
 
-          <button>Book Lab Test</button>
+          <button disabled={loading}>
+          {loading ? "Please wait..." : "Book Test"}
+          </button>
         </form>
       )}
 
@@ -249,17 +390,41 @@ const Appointment = () => {
           <label>Patient Name <span className="star">*</span></label>
           <input required onChange={e => setForm({ ...form, name: e.target.value })} />
 
-          <label>Phone <span className="star">*</span></label>
-          <input required onChange={e => setForm({ ...form, phone: e.target.value })} />
+          <label>Phone *</label>
+          <input
+            required
+            maxLength="10"
+            inputMode="numeric"
+            value={form.phone}
+            onChange={e =>
+              setForm({
+                ...form,
+                phone: e.target.value.replace(/[^0-9]/g, "")
+              })
+            }
+          />
 
           <label>Email <span className="star">*</span></label>
           <input required onChange={e => setForm({ ...form, phone: e.target.value })} />
 
-          <label>Date <span className="star">*</span></label>
-          <input type="date" required onChange={e => setForm({ ...form, appointment_date: e.target.value })} />
+          <label>Date *</label>
+          <input
+           type="date"
+           min={getTodayDate()}
+           value={form.appointment_date}
+           required
+           onChange={handleDateChange}
+          />
 
-          <label>Time <span className="star">*</span></label>
-          <input type="time" required onChange={e => setForm({ ...form, appointment_time: e.target.value })} />
+
+          <label>Time *</label>
+          <input
+            type="time"
+            min={getMinTime()}
+            value={form.appointment_time}
+            required
+            onChange={handleTimeChange}
+          />
 
           <label>Upload Prescription <span className="star">*</span></label>
           <input type="file" required accept="image/*,.pdf" />
