@@ -2,9 +2,11 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
+const PORT = process.env.PORT || 5000;
 const feedbackRoutes = require("./routes/feedbackRoutes");
 const cron = require("node-cron");
 const backupDB = require("./backup/dbBackup");
+
 app.use(cors());
 app.use(express.json());
 
@@ -20,10 +22,17 @@ app.use("/api/appointments", require("./routes/appointmentRoutes"));
 app.use("/api/feedback", require("./routes/feedbackRoutes"));
 
 
-
-app.listen(5000, () => {
-  console.log("Backend running on port 5000");
+app.get("/", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Clinic API is running 🚀"
+  });
 });
+
+app.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT}`);
+});
+
 
 // Daily DB backup at 2:00 AM
 cron.schedule("0 2 * * *", () => {
