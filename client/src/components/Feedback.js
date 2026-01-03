@@ -72,7 +72,7 @@ const Feedback = () => {
       {/* ✅ GOOGLE CAPTCHA */}
       <div style={{ margin: "15px 0" }}>
         <ReCAPTCHA
-  sitekey="6LcFKjgsAAAAADi1LTaviBhrp3NXI15Sygih-SJl"
+  sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
   onChange={(token) => setCaptchaToken(token)}
 />
 
