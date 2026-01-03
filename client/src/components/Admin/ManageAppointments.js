@@ -97,7 +97,8 @@ const ManageAppointments = () => {
         </button>
 
         <button
-          onClick={() => window.open("http://localhost:5000/api/appointments/export/csv")}
+          onClick={() => window.open(`${process.env.REACT_APP_API_URL}/appointments/export/csv`,
+  "_blank")}
           className="export-btn"
         >
           ⬇ Export CSV

@@ -141,7 +141,8 @@ const ManageDoctors = () => {
   <button
     className="export-btn"
     onClick={() =>
-      window.open("http://localhost:5000/api/doctors/export/csv")
+      window.open(`${process.env.REACT_APP_API_URL}/doctors/export/csv`,
+  "_blank")
     }
   >
     ⬇ Export CSV

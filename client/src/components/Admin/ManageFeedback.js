@@ -21,7 +21,8 @@ const ManageFeedback = () => {
     <div className="admin-card">
       <h2>📝 Patient Feedback</h2>
       <button
-      onClick={() => window.open("http://localhost:5000/api/feedback/export/csv")}
+      onClick={() => window.open(`${process.env.REACT_APP_API_URL}/feedback/export/csv`,
+  "_blank")}
       className="export-btn"
     >
       ⬇ Export CSV
