@@ -116,35 +116,7 @@ if (email && qrBuffer) {
   );
 }
 
-
-    /* ===== SEND EMAIL (BOOKING) ===== */
-    if (email) {
-      try {
-        await sendEmail(
-          email,
-          "Appointment Confirmed – Paidi's Clinic",
-          `
-          <h2>Paidi's Clinic</h2>
-          <p>Hello <b>${name}</b>,</p>
-
-          <p>Your appointment has been booked successfully.</p>
-
-          <p><b>Token:</b> ${token}</p>
-          <p><b>Date:</b> ${appointment_date || "-"}</p>
-
-          <p>Please show this QR code at reception:</p>
-
-          <img src="${qrImage}" width="180" />
-
-          <p>Regards,<br/>Paidi's Clinic</p>
-          `
-        );
-      } catch (mailErr) {
-        console.error("EMAIL ERROR:", mailErr.message);
-      }
-    }
-
-    res.json({
+res.json({
       message: "Appointment booked successfully",
       token
     });
