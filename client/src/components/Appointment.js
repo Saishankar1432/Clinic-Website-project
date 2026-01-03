@@ -140,9 +140,6 @@ const Appointment = () => {
     ) {
       setToken(res.data.token);
       setOverlay("success");
-    } else {
-      // ❌ NO TOKEN CASES
-      setOverlay("info");
     }
 
   } catch (err) {
