@@ -60,27 +60,53 @@ router.get("/logs", (req, res) => {
   );
 });
 
-router.get("/backup", (req, res) => {
-  const date = new Date().toISOString().split("T")[0];
-  const filePath =`C:\\db_backups\\manual-backup-${date}.sql`;
+router.get("/backup-db", async (req, res) => {
+  try {
+    db.query("SHOW TABLES", async (err, tables) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Backup failed" });
+      }
 
-  const command = `"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe" -u root -pMysql@532003 paidis_clinic > "C:\\db_backups\\manual-backup-${date}.sql"`;
+      let sqlDump = "-- Paidi's Clinic Database Backup\n\n";
 
+      for (const row of tables) {
+        const tableName = Object.values(row)[0];
 
-  exec(command, { shell: true }, (error) => {
-    if (error) {
-      console.error("❌ BACKUP ERROR:", error);
-      return res.status(500).json({ message: "Backup failed" });
-    }
+        sqlDump += `-- Table: ${tableName}\n`;
+        sqlDump += `TRUNCATE TABLE ${tableName};\n`;
 
-    // ✅ Ensure file exists
-    if (!fs.existsSync(filePath)) {
-      console.error("❌ Backup file not found");
-      return res.status(500).json({ message: "Backup file not created" });
-    }
+        const tableData = await new Promise((resolve, reject) => {
+          db.query(`SELECT * FROM ${tableName}`, (e, r) => {
+            if (e) reject(e);
+            resolve(r);
+          });
+        });
 
-    res.download(filePath);
-  });
+        tableData.forEach(record => {
+          const values = Object.values(record)
+            .map(v =>
+              v === null ? "NULL" : `'${String(v).replace(/'/g, "\\'")}'`
+            )
+            .join(", ");
+
+          sqlDump += `INSERT INTO ${tableName} VALUES (${values});\n`;
+        });
+
+        sqlDump += "\n";
+      }
+
+      res.setHeader("Content-Type", "application/sql");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=clinic_database_backup.sql"
+      );
+      res.send(sqlDump);
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Backup failed" });
+  }
 });
 
 module.exports = router;
