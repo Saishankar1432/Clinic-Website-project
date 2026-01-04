@@ -44,16 +44,18 @@ const AdminDashboard = () => {
         <p className={page==="footer"?"active":""} onClick={()=>setPage("footer")}>📌 Footer</p>
 
         <button
-          className="backup-btn"
-          onClick={() => {
-          if (window.confirm("Do you want to backup the entire database now?")) {
-          window.open(`${process.env.REACT_APP_API_URL}/admin/backup`,
-  "_blank");
-          }
-        }}
-        >
-       🗄️ Database Backup
-        </button>
+  className="backup-btn"
+  onClick={() => {
+    if (window.confirm("Do you want to backup the entire database now?")) {
+      window.open(
+        `${process.env.REACT_APP_API_URL}/api/admin/backup-db`,
+        "_blank"
+      );
+    }
+  }}
+>
+  🗄️ Database Backup
+</button>
 
         <button className="logout-btn" onClick={()=>navigate("/admin")}>🚪 Logout</button>
       </div>
