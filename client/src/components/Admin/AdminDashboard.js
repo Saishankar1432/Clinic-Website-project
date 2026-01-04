@@ -47,17 +47,16 @@ const AdminDashboard = () => {
   className="backup-btn"
   onClick={() => {
     if (window.confirm("Do you want to backup the entire database now?")) {
-      const BACKEND_URL =
-        process.env.NODE_ENV === "production"
-          ? "https://clinic-website-project.onrender.com"
-          : "http://localhost:5000";
-
-      window.open(`${BACKEND_URL}/api/admin/backup-db`, "_blank");
+      window.open(
+        `${process.env.REACT_APP_API_URL}/api/admin/backup-db`,
+        "_blank"
+      );
     }
   }}
 >
   🗄️ Database Backup
 </button>
+
 
 
         <button className="logout-btn" onClick={()=>navigate("/admin")}>🚪 Logout</button>
