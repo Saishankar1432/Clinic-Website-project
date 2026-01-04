@@ -60,56 +60,45 @@ router.get("/logs", (req, res) => {
   );
 });
 
-router.get("/backup-db", (req, res) => {
-  const tables = [
-    "appointments",
-    "doctors",
-    "services",
-    "feedback",
-    "about",
-    "contact",
-    "footer",
-    "pages"
-  ];
+router.get("/backup-db", async (req, res) => {
+  try {
+    const tables = [
+      "appointments",
+      "doctors",
+      "services",
+      "feedback",
+      "about",
+      "contact",
+      "footer",
+      "pages"
+    ];
 
-  let sqlDump = "-- Paidi's Clinic Database Backup\n\n";
+    const backup = {};
 
-  let completed = 0;
-
-  tables.forEach(table => {
-    db.query(`SELECT * FROM ${table}`, (err, rows) => {
-      if (err) {
-        console.error(`❌ ERROR exporting ${table}:`, err.message);
-        return res.status(500).json({ message: "Backup failed" });
-      }
-
-      sqlDump += `-- Table: ${table}\n`;
-      sqlDump += `TRUNCATE TABLE ${table};\n`;
-
-      rows.forEach(row => {
-        const values = Object.values(row)
-          .map(v =>
-            v === null ? "NULL" : `'${String(v).replace(/'/g, "\\'")}'`
-          )
-          .join(", ");
-
-        sqlDump += `INSERT INTO ${table} VALUES (${values});\n`;
+    for (const table of tables) {
+      const rows = await new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM ${table}`, (err, results) => {
+          if (err) reject(err);
+          else resolve(results);
+        });
       });
 
-      sqlDump += "\n";
-      completed++;
+      backup[table] = rows;
+    }
 
-      if (completed === tables.length) {
-        res.setHeader("Content-Type", "application/sql");
-        res.setHeader(
-          "Content-Disposition",
-          "attachment; filename=clinic_database_backup.sql"
-        );
-        res.send(sqlDump);
-      }
-    });
-  });
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=clinic_database_backup.json"
+    );
+
+    res.send(JSON.stringify(backup, null, 2));
+  } catch (err) {
+    console.error("❌ BACKUP ERROR:", err.message);
+    res.status(500).json({ message: "Backup failed" });
+  }
 });
+
 
 
 module.exports = router;
