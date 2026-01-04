@@ -47,7 +47,8 @@ const AdminDashboard = () => {
           className="backup-btn"
           onClick={() => {
           if (window.confirm("Do you want to backup the entire database now?")) {
-          window.open("http://localhost:5000/api/admin/backup");
+          window.open(`${process.env.REACT_APP_API_URL}/admin/backup`,
+  "_blank");
           }
         }}
         >
