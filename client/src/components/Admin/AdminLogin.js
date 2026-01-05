@@ -11,17 +11,27 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      await API.post("/admin/login", form);
+  try {
+    const res = await API.post("/admin/login", form);
 
-      // ✅ Redirect to dashboard after login
-      navigate("/admin/dashboard");
-    } catch {
-      alert("Invalid username or password");
-    }
-  };
+    // ✅ STORE LOGIN INFO HERE
+    if (!res.data.role) {
+  alert("Login failed: role not received");
+  return;
+}
+
+localStorage.setItem("role", res.data.role);
+localStorage.setItem("isAdminLoggedIn", "true");
+
+    // ✅ Redirect to dashboard
+    navigate("/admin/dashboard");
+  } catch {
+    alert("Invalid username or password");
+  }
+};
+
 
   return (
     <form

@@ -20,6 +20,9 @@ app.use("/api/footer", require("./routes/footerRoutes"));
 app.use("/api/pages", require("./routes/pagesRoute")); 
 app.use("/api/appointments", require("./routes/appointmentRoutes"));
 app.use("/api/feedback", require("./routes/feedbackRoutes"));
+app.use("/uploads", express.static("uploads"));
+app.use("/api/medicine", require("./routes/medicineRoutes"));
+
 
 
 app.get("/", (req, res) => {

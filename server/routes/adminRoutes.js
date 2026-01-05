@@ -33,7 +33,10 @@ router.post("/login", (req, res) => {
         req
       });
 
-      res.json({ message: "Login successful" });
+      res.json({
+  message: "Login successful",
+  role: result[0].role
+});
     }
   );
 });
