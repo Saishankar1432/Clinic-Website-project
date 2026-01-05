@@ -6,6 +6,14 @@ const ManageAbout=()=>{
 
   useEffect(()=>{API.get("/pages/about").then(res=>setData(res.data))},[]);
 
+  const handleSave = async () => {
+    await API.put("/pages/about", data);
+    alert("About updated successfully");
+
+    const res = await API.get("/pages/about");
+    setData(res.data);
+  };
+
   return (
     <>
       <h2 className="page-title">Edit About</h2>
@@ -15,7 +23,9 @@ const ManageAbout=()=>{
         <input placeholder="Qualification" value={data.qualification} onChange={e=>setData({...data,qualification:e.target.value})}/>
         <textarea placeholder="Content" value={data.content} onChange={e=>setData({...data,content:e.target.value})}/>
         <textarea placeholder="Bullets | separated" value={data.bullets} onChange={e=>setData({...data,bullets:e.target.value})}/>
-        <button className="save-btn" onClick={()=>API.put("/pages/about",data)}>Save</button>
+        <button type="button" className="save-btn" onClick={handleSave}>
+          Save
+        </button>
       </form>
     </>
   );
