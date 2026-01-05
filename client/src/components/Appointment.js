@@ -402,7 +402,7 @@ const Appointment = () => {
           />
 
           <label>Email <span className="star">*</span></label>
-          <input required onChange={e => setForm({ ...form, phone: e.target.value })} />
+          <input required onChange={e => setForm({ ...form, email: e.target.value })} />
 
           <label>Date *</label>
           <input
