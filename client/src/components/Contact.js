@@ -17,13 +17,15 @@ const Contact = () => {
         <div className="contact-info">
           <h2>{contact.title || "Contact Us"}</h2>
 
-          {contact.content?.split("|").map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
+          <p>{contact.address}</p>
+<p>{contact.phone}</p>
+<p>{contact.email}</p>
+<p>{contact.hours}</p>
 
-          <p className="emergency">
-            🚑 <strong>Emergency:</strong> 24/7 Ambulance Available
-          </p>
+<p className="emergency">
+  {contact.emergency}
+</p>
+
         </div>
 
         {/* RIGHT SIDE – FEEDBACK FORM */}
